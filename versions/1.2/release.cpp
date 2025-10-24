@@ -27,10 +27,9 @@ int main() {
     pxOld, pyOld - player coordinates from previous frame
     ex, ey - end coordinates
     */
-    int px, py, pxOld = 0, pyOld = 0, ex, ey, gameOver = 0, width, height;
+    int px, py, pxOld = 0, pyOld = 0, ex, ey, gameOver = 0;
     // Start conditions
-    width = 8;
-    height = 8;
+    	const int width = 8, height = 8;
     px = 1;
     py = 1;
     ex = 6;
