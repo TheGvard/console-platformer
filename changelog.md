@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0] - 2025-10-30
+### Added
+- Debug mode with console commands
+- Multiple ends on the same map
+
+### Refactored
+- Changed static array `coords` to vector
+
 ## [1.2.0] - 2025-10-22
 ### Added
 - Key-door puzzle mechanics (types 11-20)
