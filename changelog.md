@@ -7,6 +7,7 @@
 
 ### Refactored
 - Changed static array `coords` to vector
+- Replaced numbers defining tiles with `enum` for better understanding
 
 ## [1.2.0] - 2025-10-22
 ### Added
