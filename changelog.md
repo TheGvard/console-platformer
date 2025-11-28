@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.0] - 2025-11-28
+### Added
+- Camera system
+- More debug commands
+### Refactored
+- Player is now being rendered separately from the rest of the grid
+- Moved `enum` to global variables
+- Moved tile rendering in a separate function
+
 ## [1.3.0] - 2025-10-30
 ### Added
 - Debug mode with console commands
