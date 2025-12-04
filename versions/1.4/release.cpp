@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <cctype>
+#include <fstream>
 
 // List of in-game tiles
 enum basic {
@@ -32,7 +33,7 @@ int middle (int a, int b, int c) {
 	int middle = sum - std::max(a, std::max(b, c)) - std::min(a, std::min(b, c));
 	return middle;
 }
-// Tile rendering
+// Rendering
 void tileRender(int tile) {
 	switch (tile) {
 	case basic::PLAYER: std::cout << "()"; break;
@@ -65,18 +66,28 @@ bool isObstacle (int tile) {
 	}
 }
 
+// Actual game
+void game(int debugMode) {
+	
+}
+
 int main() {
     std::string input = "";
     bool debugMode;
-    
     std::cout << "Type in «start»\n";
     
-    while (input != "start") {
+    for(;;) {
         std::getline(std::cin, input);
-		if (input == "start") {} 
+		if (input == "start") {
+			game(debugMode);
+			break;
+		}
 		else if (input == "debug") {
 			debugMode = true;
     		std::cout << "Debug mode activated";
+		}
+		else if (input == "load") {
+			
 		}
 		else {
 			std::cout << "Sorry, must've been the wind...\nTry again:";
@@ -147,6 +158,7 @@ int main() {
         }
         for (int x = camSideLeft - 1; x < camSideRight + 1; x++) std::cout << "==";
         std::cout << "\n";
+        
         for (int y = camSideDown; y < camSideUp; y++) {
             std::cout << "||";
             for (int x = camSideLeft; x < camSideRight; x++) {
@@ -230,61 +242,56 @@ int main() {
         	else if (input == "/rule") {
         		std::cout << "Type in rule, state: ";
         		std::getline(std::cin, input);
-        		std::string rule = "";
-        		int i;
-        		bool argumentError = false;
-        		for(i = 0; !std::isspace(input[i]); i++) {
-        			if (i < input.size()) {
-        				rule += input[i];
-        			}
+        		std::string rule = "", stateString = "";
+        		int i, state;
+        		bool switchToValue = false, argError = false;
+        		for(i = 0; i < input.size(); i++) {
+        			if (std::isspace(input[i])) switchToValue = true;
         			else {
-        				std::cout << "No argument included";
-        				break;
+        				if (switchToValue == false) rule += input[i];
+        				else if (std::isdigit(input[i])) stateString += input[i];
+        				else {
+        					argError = true;
+        					std::cout << "Error: value should only contain numbers";
+        					break;
+        				}
         			}
         		}
-        		std::string stateString = "";
-        		int state;
-        		for(i += 1; i < input.size(); i++) {
-        			if (std::isdigit(input[i])) {
-        				stateString += input[i];
+        		if (stateString == "") {
+        			argError = true;
+        			std::cout << "Error: No argument included";
+        		}
+        		if (argError == false) {
+        			state = std::stoi(stateString);
+        			std::cout << state << "\n";
+        			// Rules list
+        			if (rule == "renderEverything") {
+        				if (state >= 0 && state <= 1) {
+        					renderEverything = state;
+        				}
+        				else std::cout << "Can only be 0 or 1";
         			}
-        			else {
-        				argumentError = true;
-        				break;
-        			}		
-        		}
-        		if (argumentError = true) {
-        			std::cout << "Invalid argument\n";
-        			continue;
-        		}
-        		else state = std::stoi(stateString);
-        		// Rules list
-        		if (rule == "renderEverything") {
-        			if (state >= 0 && state <= 1) {
-        				renderEverything = state;
+        			else if (rule == "camDistance") {
+        				if (state >= 0) {
+        					camDistX = state;
+        					camDistY = state;
+        				}
+        				else std::cout << "Cannot be lower than 0";
         			}
-        			else std::cout << "Can only be 0 or 1";
-        		}
-        		else if (rule == "camDistance") {
-        			if (state >= 0) {
-        				camDistX = state;
-        				camDistY = state;
+        			else if (rule == "camDistanceX") {
+        				if (state >= 0) {
+        					camDistX = state;
+        				}
+        				else std::cout << "Cannot be lower than 0";
         			}
-        			else std::cout << "Cannot be lower than 0";
-        		}
-        		else if (rule == "camDistanceX") {
-        			if (state >= 0) {
-        				camDistX = state;
+        			else if (rule == "camDistanceY") {
+        				if (state >= 0) {
+        					camDistY = state;
+        				}
+        				else std::cout << "Cannot be lower than 0";
         			}
-        			else std::cout << "Cannot be lower than 0";
+        			else std::cout << "Rule not found";
         		}
-        		else if (rule == "camDistanceY") {
-        			if (state >= 0) {
-        				camDistY = state;
-        			}
-        			else std::cout << "Cannot be lower than 0";
-        		}
-        		else std::cout << "Rule not found";
         	}
         	// Noclip
         	else if (input == "/noclip") {
